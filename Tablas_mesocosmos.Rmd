@@ -1,0 +1,107 @@
+---
+title: "Tablas y graficos mesocosmos"
+author: "Javier Zapata"
+date: "25-08-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message= F, warning= F)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+```
+
+## Valor total de "N" para las disintintas localidades
+
+Se calculo para todas las localidades el valor de "N" total, en la siguiente tabla se muestra
+el numero de datos totales por localidad.
+
+```{r, echo = F, message= F, warning= F}
+
+
+Localidad = c("Quintay", "Chiloé", "Talcaruca", "Total")
+numero.de.datos = c(123,128,128,379)
+Tabla_uno = data.frame(cbind(Localidad, numero.de.datos))
+
+kable(Tabla_uno, digits = 2, caption = "Valor de N total por localidad") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F) %>% 
+    scroll_box(width = "800px", height = "200px")
+```
+
+## Evalacuacion del "N" por variable ###
+
+Para todas las variables del **mesocosmos** (morfologia y parametros de experimentos), 
+**fisiologia** (respiracion y frecuencia cardiaca) y **biomecanica** (estructural y material). 
+Se calcularon los valores de "N" con el objetivo de evidenciar la existencia de desbalance
+de los datos en relacion a las localidades.
+
+```{r, echo = F, message= F, warning= F}
+
+Localidad = c("Chiloé", "Quintay", "Talcaruca", "Total (379)")
+Peso_bollante = c(128, 123, 124, 375)
+Volumen_cm = c(128, 123, 126, 377)
+Largo = c(128, 123, 124, 375)
+Ancho = c(128, 123, 124, 375)
+Alto = c(128, 123, 124, 375)
+Peso_total = c(128, 123, 124, 375)
+Margen_crecimiento = c(126, 103, 124,353)
+Peso_seco_concha = c(126, 103, 126, 355)
+Peso_seco_mb = c(126, 102, 124, 352)
+Peso_libre_ceniza = c(126, 102, 124, 352)
+
+Tabbla_one = data.frame(cbind(Localidad, Peso_bollante, Volumen_cm, Largo, Ancho, Alto, 
+Peso_total, Margen_crecimiento, Peso_seco_concha, Peso_seco_mb, Peso_libre_ceniza))
+
+kable(Tabbla_one, digits = 2, caption = "Valor de N total morfologia") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F) %>% 
+    scroll_box(width = "800px", height = "200px")
+
+Localidad = c("Chiloé", "Quintay", "Talcaruca", "Total (379)")
+Variables_mesocosmos = c(126, 123, 124, 375)
+Fisiologia_respiracion = c(83, 83, 59, 225)
+Fisiologia_cardiaca = c(94, 114, 87, 295)
+
+Tabbla_tree = data.frame(cbind(Localidad, Variables_mesocosmos, Fisiologia_respiracion, Fisiologia_cardiaca))
+
+kable(Tabbla_tree, digits = 2, caption = "Valor de N total variables del mesocosmos y fisiologia") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F) %>% 
+    scroll_box(width = "800px", height = "200px")
+
+Localidad = c("Chiloé", "Quintay", "Talcaruca", "Total (379)")
+Biomecanica_estructural = c(118, 103, 121, 342)
+Biomecanica_material = c(125, 102, 121, 348)
+
+Tabbla_two = data.frame(cbind(Localidad, Biomecanica_estructural, Biomecanica_material))
+
+kable(Tabbla_two, digits = 2, caption = "Valor de N total biomecanica") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F) %>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+
+## Tablas y graficos de las distintas variables ###
+
+Por cada variable se mostrara un tabla que contendra el promedio y desviacion estandar
+de cada varible evaluada en casa experimento.
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Peso_bollante != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Peso.bollante = mean(Peso_bollante), desv = sd(Peso_bollante))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del peso bollante por localidad") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F)%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+
+
