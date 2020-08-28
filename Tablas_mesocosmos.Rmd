@@ -1,16 +1,25 @@
 ---
-title: "Tablas y graficos mesocosmos"
+title: "Informe Resumen; Mesocosmos"
 author: "Javier Zapata"
-date: "25-08-2020"
-output: html_document
+date: "27-08-2020"
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, message= F, warning= F)
+library(plyr)
 library(tidyverse)
 library(kableExtra)
 library(knitr)
 ```
+
+### Resultados experimentos de mesocosmos ###
+
+El objetivo principal del siguiente informe, es evidenciar en una primera parte 
+el balanceo de los datos en relacion a los experimentos. Mientras que la segunda
+parte, demuestra en base a tablas y graficos los resultados obtenidos en los distintos experimentos realizados 
 
 ## Valor total de "N" para las disintintas localidades
 
@@ -26,8 +35,7 @@ Tabla_uno = data.frame(cbind(Localidad, numero.de.datos))
 
 kable(Tabla_uno, digits = 2, caption = "Valor de N total por localidad") %>% 
     kable_styling(bootstrap_options = c("striped", 
-        "hover", "condensed"), full_width = F) %>% 
-    scroll_box(width = "800px", height = "200px")
+        "hover", "condensed"), full_width = F)
 ```
 
 ## Evalacuacion del "N" por variable ###
@@ -68,8 +76,7 @@ Tabbla_tree = data.frame(cbind(Localidad, Variables_mesocosmos, Fisiologia_respi
 
 kable(Tabbla_tree, digits = 2, caption = "Valor de N total variables del mesocosmos y fisiologia") %>% 
     kable_styling(bootstrap_options = c("striped", 
-        "hover", "condensed"), full_width = F) %>% 
-    scroll_box(width = "800px", height = "200px")
+        "hover", "condensed"), full_width = F)
 
 Localidad = c("Chiloé", "Quintay", "Talcaruca", "Total (379)")
 Biomecanica_estructural = c(118, 103, 121, 342)
@@ -79,29 +86,521 @@ Tabbla_two = data.frame(cbind(Localidad, Biomecanica_estructural, Biomecanica_ma
 
 kable(Tabbla_two, digits = 2, caption = "Valor de N total biomecanica") %>% 
     kable_styling(bootstrap_options = c("striped", 
-        "hover", "condensed"), full_width = F) %>% 
-    scroll_box(width = "800px", height = "200px")
-
+        "hover", "condensed"), full_width = F)
 ```
 
 ## Tablas y graficos de las distintas variables ###
 
-Por cada variable se mostrara un tabla que contendra el promedio y desviacion estandar
-de cada varible evaluada en casa experimento.
+Por cada variable se mostrara una tabla que contendra el promedio y desviacion estandar
+de cada experimento y su grafico correspondiente.
+
+### Morfologia: Peso bollante por tratamiento y localidad ###
 
 ```{r, echo = F, message= F, warning= F}
 library(tidyverse)
 library(kableExtra)
 library(knitr)
 mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
 mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
 mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Peso_bollante != "NA")
 mesocosmos_3 <- summarize(mesocosmos_2, Peso.bollante = mean(Peso_bollante), desv = sd(Peso_bollante))
 
-kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del peso bollante por localidad") %>% 
-    kable_styling(bootstrap_options = c("striped", 
-        "hover", "condensed"), full_width = F)%>% 
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del peso bollante por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
     scroll_box(width = "800px", height = "200px")
 ```
 
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Peso_bollante.jpeg)
 
+### Morfologia: Volumen por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Volumen_cm != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Volumen.cm = mean(Volumen_cm), desv = sd(Volumen_cm))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Volumen por localidad y tratamiento") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Volumen.jpeg)
+
+### Morfologia: largo por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Largo != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Largo = mean(Largo), desv = sd(Largo))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del largo por localidad y tratamiento") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/largo.jpeg)
+
+### Morfologia: Alto por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Alto != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Alto = mean(Alto), desv = sd(Alto))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Alto por localidad y tratamiento") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/alto.jpeg)
+
+### Morfologia: Ancho por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Ancho != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Ancho = mean(Ancho), desv = sd(Ancho))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Ancho por localidad y tratamiento") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/ancho.jpeg)
+
+### Morfologia: Peso total por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Peso_total != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Peso.total = mean(Peso_total), desv = sd(Peso_total))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Peso total por localidad y tratamiento") %>% 
+    kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Peso total.jpeg)
+
+### Morfologia: Margen de crecimiento por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Margen_crecimiento != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Margen.crecimiento = mean(Margen_crecimiento), desv = sd(Margen_crecimiento))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Margen de crecimiento por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Margen crecimiento.jpeg)
+
+### Morfologia: Peso seco concha por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Peso_seco_concha != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Peso.seco.concha = mean(Peso_seco_concha), desv = sd(Peso_seco_concha))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Peso seco de la concha por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Peso seco concha.jpeg)
+
+### Morfologia: Peso seco masa blanda por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Pseco_mb != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Mean.Peso.seco.mb = mean(Pseco_mb), desv = sd(Pseco_mb))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Peso seco de la masa blanda por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Peso masa blanda.jpeg)
+
+### Morfologia: Peso libre de ceniza por tratamiento y localidad ###
+
+```{r, echo = F, message= F, warning= F}
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Peso_libre_ceniza != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Peso.libre.ceniza = mean(Peso_libre_ceniza), desv = sd(Peso_libre_ceniza))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Peso libre de ceniza por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Peso libre ceniza.jpeg)
+
+## Biomecanica; Resistencia estructural
+ 
+### Rigidez
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- rename(mesocosmos, Rigidez = pendiente, Extension.maxima = extensiÃ³n_max, carga.max = carga_max)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Rigidez != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Rigidez. = mean(Rigidez), desv = sd(Rigidez))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD de la rigidez por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Rigidez.jpeg)
+
+### Extension maxima
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos <- rename(mesocosmos, Rigidez = pendiente , Extension.maxima = extensiÃ³n_max , carga.max = carga_max)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Extension.maxima != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Extension.maxima. = mean(Extension.maxima), desv = sd(Extension.maxima))
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD de la Extension maxima por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Extension maxima.jpeg)
+
+### carga maxima
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos <- rename(mesocosmos, Rigidez = pendiente , Extension.maxima = extensiÃ³n_max , Carga.max = carga_max)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Carga.max != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Carga.max. = mean(Carga.max), desv = sd(Carga.max))
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD de la Carga maxima por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Carga maxima.jpeg)
+
+## Biomecanica; Resistencia material
+ 
+### Modulo elastico
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos <- rename(mesocosmos, Modulo.elastico = Modulo_ElÃ.stico , Estres.max = EstrÃ.s_mÃ.x , Presion.max = PresiÃ³n_MÃ.x)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Modulo.elastico != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Modulo.elastico. = mean(Modulo.elastico), desv = sd(Modulo.elastico))
+
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del modulo elastico por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Modulo elastico.jpeg)
+
+### Estres maximo (Esfuerzo)
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos <- rename(mesocosmos, Modulo.elastico = Modulo_ElÃ.stico , Estres.max = EstrÃ.s_mÃ.x , Presion.max = PresiÃ³n_MÃ.x)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Estres.max != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Estres.max. = mean(Estres.max), desv = sd(Estres.max))
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del Estres maximo (Esfuerzo) por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Esfuerzo max.jpeg)
+
+### Presion maxima (Deformacion)
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+mesocosmos <- rename(mesocosmos, Modulo.elastico = Modulo_ElÃ.stico , Estres.max = EstrÃ.s_mÃ.x , Presion.max = PresiÃ³n_MÃ.x)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Presion.max != "NA")
+mesocosmos_3 <- summarize(mesocosmos_2, Presion.max. = mean(Presion.max), desv = sd(Presion.max))
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD de la Presion maxima (Deformacion) por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Desformacion.jpeg)
+
+## Biomecanica; Nano-indentacion
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- rename(mesocosmos, Microdureza = Media.individuo)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Microdureza != "NA") 
+mesocosmos_3 <- summarize(mesocosmos_2, Microdureza.Mean = mean(Microdureza), desv = sd(Microdureza))
+
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD de la Microdureza por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Microdureza.jpeg)
+
+## Variables del mesocosmos ##
+
+```{r, echo = F, message= F, warning= F}
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (pH.Mean.25.C != "NA") 
+mesocosmos_3 <- summarize(mesocosmos_2, pH.Mean.25.C.Mean = mean(pH.Mean.25.C))
+
+## Salinidad ##
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_4 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                     Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                     Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_5 <- unite(mesocosmos_4, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_6 <- group_by(mesocosmos_5, Localidad, tratamiento) %>% filter (Salinidad != "NA") 
+mesocosmos_7 <- summarize(mesocosmos_6, Salinidad.Mean = mean(Salinidad))
+
+ph.25_salinidad <- full_join(mesocosmos_3, mesocosmos_7)
+
+## Temperatura ###
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_8 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                       Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                       Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_9 <- unite(mesocosmos_8, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_10 <- group_by(mesocosmos_9, Localidad, tratamiento) %>% filter (Temperatura != "NA") 
+mesocosmos_11 <- summarize(mesocosmos_10, Temperatura.Mean = mean(Temperatura))
+
+ph.25_salinidad_temperatura <- full_join(ph.25_salinidad, mesocosmos_11)
+
+## Alcalinidad ###
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_12 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                       Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                       Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_13 <- unite(mesocosmos_12, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_14 <- group_by(mesocosmos_13, Localidad, tratamiento) %>% filter (Alcalinidad.total != "NA") 
+mesocosmos_15 <- summarize(mesocosmos_14, Alcalinidad.total.Mean = mean(Alcalinidad.total))
+
+ph.25_salinidad_temperatura_alcalinidad <- full_join(ph.25_salinidad_temperatura, mesocosmos_15)
+
+
+## pCO2 ## 
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_16 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                        Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                        Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_17 <- unite(mesocosmos_16, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_18 <- group_by(mesocosmos_17, Localidad, tratamiento) %>% filter (pCO2 != "NA") 
+mesocosmos_19 <- summarize(mesocosmos_18, pCO2.Mean = mean(pCO2))
+
+ph.25_salinidad_temperatura_alcalinidad_pCO2 <- full_join(ph.25_salinidad_temperatura_alcalinidad, mesocosmos_19)
+
+## Calcita ## 
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_20 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                        Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                        Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_21 <- unite(mesocosmos_20, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_22 <- group_by(mesocosmos_21, Localidad, tratamiento) %>% filter (Saturacion.Calcita != "NA") 
+mesocosmos_23 <- summarize(mesocosmos_22, Saturacion.Calcita.Mean = mean(Saturacion.Calcita))
+
+ph.25_salinidad_temperatura_alcalinidad_pCO2_calcita <- full_join(ph.25_salinidad_temperatura_alcalinidad_pCO2, mesocosmos_23)
+
+## aragonita ##
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+
+mesocosmos_24 <- rename(mesocosmos, pH.Mean.25.C = ph.Promedio..25Â.C., Salinidad = Salinidad, 
+                        Temperatura = Temperatura, Alcalinidad.total = Alcalinidad_total..Âµmol.kg.1., pCO2 = pCO2..Âµatm.,
+                        Saturacion.Calcita = Î.calcita, Saturacion.Aragonita = Î.aragonita)
+
+mesocosmos_25 <- unite(mesocosmos_24, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_26 <- group_by(mesocosmos_25, Localidad, tratamiento) %>% filter (Saturacion.Aragonita != "NA") 
+mesocosmos_27 <- summarize(mesocosmos_26, Saturacion.Aragonita.Mean = mean(Saturacion.Aragonita))
+
+ph.25_salinidad_temperatura_alcalinidad_pCO2_calcita_aragonita <- full_join(ph.25_salinidad_temperatura_alcalinidad_pCO2_calcita, mesocosmos_27)
+
+kable(ph.25_salinidad_temperatura_alcalinidad_pCO2_calcita_aragonita, digits = 4, caption = "Promedio y SD de las variables del mesocosmos por localidad y tratamiento") %>%  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+
+## Fisiologia ##
+
+### Consumo oxigeno
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- rename(mesocosmos, Consumo.oxigeno = mgO2.h.g.2, Frecuencia.cardiaca = lat.min)
+                     
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Consumo.oxigeno != "NA") 
+mesocosmos_3 <- summarize(mesocosmos_2, Consumo.oxigeno. = mean(Consumo.oxigeno), desv.Consumo.O2 = sd(Consumo.oxigeno))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del consumo de oxigeno por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Consumo oxigeno.jpeg)
+
+### Frecuencia cardiaca
+
+```{r, echo = F, message= F, warning= F}
+library(plyr)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- read.table("C:/Users/jazap/Desktop/Cambio climatico/Experimentos/Mesocosmos/Analisis preliminares/mesocosmos.txt",header=TRUE,sep="\t", fill = TRUE)
+
+mesocosmos <- rename(mesocosmos, Consumo.oxigeno = mgO2.h.g.2, Frecuencia.cardiaca = lat.min)
+
+mesocosmos_1 <- unite(mesocosmos, tratamiento,c(2:3), sep = ";", remove = T)
+mesocosmos_2 <- group_by(mesocosmos_1, Localidad, tratamiento) %>% filter (Frecuencia.cardiaca != "NA") 
+mesocosmos_3 <- summarize(mesocosmos_2, Frecuencia.cardiaca. = mean(Frecuencia.cardiaca), desv.Frecuencia.cardiaca = sd(Frecuencia.cardiaca))
+
+kable(mesocosmos_3, digits = 4, caption = "Promedio y SD del consumo de oxigeno y frecuencia cardiaca por localidad y tratamiento") %>% kable_styling(bootstrap_options = c("striped", 
+        "hover", "condensed"), full_width = F, position = "center")%>% 
+    scroll_box(width = "800px", height = "200px")
+```
+![](C:/Users/jazap/Documents/R/resumen_mesocosmos/Frecuencia cardiaca.jpeg)
